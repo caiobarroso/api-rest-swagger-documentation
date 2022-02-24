@@ -17,7 +17,7 @@ tags:
 schemes:
   - "http"
 paths:
-  /recursos:
+  /recursos/order-by-name:
     get:
       tags:
         - "aniversariantes"
@@ -54,8 +54,6 @@ paths:
         500:
           description: Internal Server Error
         
-
-
   /recursos/show-by-month/{mes}:
     get:
       tags:
@@ -82,6 +80,38 @@ paths:
         - "aniversariantes"
       summary: "Edita aniversariante pelo nome"
       description: "Essa rota será responsável por editar o dia e o mês de um aniversariante filtrando pelo nome."
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: nome
+          schema:
+            type: string
+            required: true
+            description: nome do aniversariante
+        - in: body
+          name: body
+          required: true
+          description: body object
+          schema:
+            type: object
+            properties:
+              dia:
+                type: string
+                required: true
+              mes:
+                type: string
+                required: true
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error       
+
   /recursos/delete-by-name/{nome}:
     delete:
       tags:
@@ -103,6 +133,67 @@ paths:
         500:
           description: Internal Server Error
 
+  /recursos/show-by-initial/{inicial}:
+    get:
+      tags:
+        - "aniversariantes"
+      summary: "Consultar aniversariantes pela letra inicial do nome."
+      description: "Essa rota será responsável por consultar um aniversariante pela letra inicial do nome"
+      parameters:
+        - in: path
+          name: inicial
+          schema:
+            type: string
+          required: true
+          description: Digite a inicial.
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+
+  /recursos/show-by-date/{dia}/{mes}:
+    get:
+      tags:
+        - "aniversariantes"
+      summary: "Mostra aniversariante pela data"
+      description: "Essa rota será responsável por filtar um aniversariante existente pela data (dia/mês)."
+      parameters:
+        - in: path
+          name: dia
+          schema:
+            type: string
+          required: true
+          description: Digite o dia desejado.
+        - in: path
+          name: mes
+          schema:
+            type: string
+          required: true
+          description: Digite o mês desejado.
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+    
+  /recursos/order-by-month:
+    get:
+      tags:
+        - "aniversariantes"
+      summary: "Retorna lista completa de aniversariantes ordenada por mêS"
+      description: "Essa rota será responsável por retornar todos os aniversariantes ordenados por mês"
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
 components:
   schemas:
     aniversariantes:

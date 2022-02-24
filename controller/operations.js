@@ -14,24 +14,14 @@ exports.addBirthday = async (req, res) => {
   }
 };
 
-exports.showAllBirthdays = async (req, res) => {
+exports.deleteByName = async (req, res) => {
   try {
-    const mostrarTodosRecursos = await pool.query("SELECT * from aniversariantes");
-    res.json(mostrarTodosRecursos.rows);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-exports.showBirthdaysByMonth = async (req, res) => {
-  try {
-    const { mes } = req.params;
-    const mostrarRecurso = await pool.query(
-      "SELECT * from aniversariantes WHERE mes = $1",
-      [mes]
+    const { nome } = req.params;
+    const deletarRecurso = await pool.query(
+      "DELETE FROM aniversariantes WHERE nome = $1 ",
+      [nome]
     );
-
-    res.json(mostrarRecurso);
+    res.json("deletado");
   } catch (e) {
     console.log(e);
   }
@@ -52,15 +42,63 @@ exports.editByName = async (req, res) => {
   }
 };
 
-exports.deleteByName = async (req, res) => {
-    try {
-      const { nome } = req.params;
-      const deletarRecurso = await pool.query(
-        "DELETE FROM aniversariantes WHERE nome = $1 ",
-        [nome]
-      );
-      res.json("deletado");
-    } catch (e) {
-      console.log(e);
-    }
+exports.showByDate = async (req, res) => {
+  try {
+    const { dia, mes } = req.params;
+    const mostraPelaData = await pool.query(
+      `select * from aniversariantes WHERE dia = $1 AND mes = $2`,
+      [dia, mes]
+    );
+    res.json(mostraPelaData.rows);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.filterByMonth = async (req, res) => {
+  try {
+    const { mes } = req.params;
+    const mostrarRecurso = await pool.query(
+      "SELECT * from aniversariantes WHERE mes = $1",
+      [mes]
+    );
+
+    res.json(mostrarRecurso);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.showByInitial = async (req, res) => {
+  try {
+    const { inicial } = req.params;
+    const mostraPelaInicial = await pool.query(
+      `select * from aniversariantes WHERE nome LIKE '${inicial}%' `
+    );
+    res.json(mostraPelaInicial.rows);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.orderByName = async (req, res) => {
+  try {
+    const mostrarTodosRecursos = await pool.query(
+      "SELECT * from aniversariantes ORDER BY nome"
+    );
+    res.json(mostrarTodosRecursos.rows);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+exports.orderByMonth = async (req, res) => {
+  try {
+    const mostrarTodosRecursos = await pool.query(
+      "SELECT * from aniversariantes ORDER BY mes"
+    );
+    res.json(mostrarTodosRecursos.rows);
+  } catch (e) {
+    console.log(e);
+  }
 };
