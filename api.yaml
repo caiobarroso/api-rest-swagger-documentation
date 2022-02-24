@@ -1,0 +1,119 @@
+swagger: "2.0"
+info:
+  description: "Essa é uma API para cadastro de aniversariantes"
+  version: "1.0.0"
+  title: "Api Documentation"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "caiobarroso511@yahoo.com.br"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8001"
+basePath: "/"
+tags:
+  - name: "aniversariantes"
+    description: "Access to Petstore orders"
+schemes:
+  - "http"
+paths:
+  /recursos:
+    get:
+      tags:
+        - "aniversariantes"
+      summary: "Retorna lista completa de aniversariantes"
+      description: "Essa rota será responsável por retornar todos os aniversariantes"
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+
+  /recursos/add:
+    post:
+      tags:
+        - "aniversariantes"
+      summary: "Cadastro de aniversariantes"
+      description: "Essa rota será responsável por cadastrar um novo aniversariante"
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: aniversariantes
+        schema:
+          $ref: "#/components/schemas/aniversariantes"
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+        
+
+
+  /recursos/show-by-month/{mes}:
+    get:
+      tags:
+        - "aniversariantes"
+      summary: "Mostra aniversariante pelo mês"
+      description: "Essa rota será responsável por filtar um aniversariante existente pelo mês."
+      parameters:
+        - in: path
+          name: mes
+          schema:
+            type: String
+          required: true
+          description: Digite o mês desejado.
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+  /recursos/edit-by-name/{nome}:
+    put:
+      tags:
+        - "aniversariantes"
+      summary: "Edita aniversariante pelo nome"
+      description: "Essa rota será responsável por editar o dia e o mês de um aniversariante filtrando pelo nome."
+  /recursos/delete-by-name/{nome}:
+    delete:
+      tags:
+        - "aniversariantes"
+      summary: "Deletar aniversariante"
+      description: "Essa rota será responsável por deletar um aniversariante pelo nome"
+      parameters:
+        - in: path
+          name: nome
+          schema:
+            type: String
+          required: true
+          description: Digite o nome desejado.
+      responses:
+        200:
+          description: Sucess
+        400:
+          description: Error
+        500:
+          description: Internal Server Error
+
+components:
+  schemas:
+    aniversariantes:
+      type: object
+      properties:
+        nome:
+          type: string
+          required: true
+        dia:
+          type: string
+          required: true
+        mes:
+          type: string
+          required: true
